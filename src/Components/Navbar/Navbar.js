@@ -1,11 +1,12 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../Assets/Image/logo.png";
 import { auth } from "../../Firebase/firebase.init";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [user, setUser] = useState({});
   // console.log(user);
@@ -23,6 +24,7 @@ const Navbar = () => {
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {
+        navigate("/login");
         // Sign-out successful.
       })
       .catch((error) => {

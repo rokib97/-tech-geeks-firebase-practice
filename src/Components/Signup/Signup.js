@@ -36,11 +36,7 @@ const Signup = () => {
     const password = event.target.password.value; */
     // const passwordConfirm = event.target.confirmPassword.value;
 
-    if (
-      email.value &&
-      password.value &&
-      password.value === passwordConfirmation.value
-    ) {
+    if (email.value && password.value === passwordConfirmation.value) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
@@ -48,10 +44,9 @@ const Signup = () => {
           console.log(user);
           // ...
         })
-        .catch((error) => {
-          const errorMessage = error.message;
+        .catch((e) => {
+          const errorMessage = e.message;
           console.log(errorMessage);
-          // ..
         });
     }
   };
@@ -90,6 +85,7 @@ const Signup = () => {
                 onBlur={(event) => handleEmail(event)}
               />
             </div>
+            {/* {email?.error && <p className="error">{email?.error}</p>} */}
           </div>
           <div className="input-field">
             <label htmlFor="password">Password</label>

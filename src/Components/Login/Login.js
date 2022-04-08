@@ -4,6 +4,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import React from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import GoogleLogo from "../../Assets/Image/google.svg";
 import { auth } from "../../Firebase/firebase.init";
@@ -16,6 +17,8 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
+        navigate("/");
+
         console.log(user);
       })
       .catch((error) => {
@@ -32,11 +35,15 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        toast.success("Successfull", { id: "success" });
+
         console.log(user);
         // ...
       })
       .catch((error) => {
         const errorMessage = error.message;
+        toast.error("Failed", { id: "success" });
+
         console.log(errorMessage);
       });
   };
