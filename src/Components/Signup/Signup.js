@@ -61,7 +61,11 @@ const Signup = () => {
   };
   const handlePassword = (event) => {
     const passwordInput = event.target.value;
-    setPassword({ value: passwordInput, error: "" });
+    if (passwordInput.length < 7) {
+      setPassword({ value: "", error: "Password too short!" });
+    } else {
+      setPassword({ value: passwordInput, error: "" });
+    }
   };
   const handleConfirmPassword = (event) => {
     const confirmPasswordInput = event.target.value;
@@ -97,6 +101,7 @@ const Signup = () => {
                 onBlur={handlePassword}
               />
             </div>
+            {password?.error && <p className="error">{password?.error}</p>}
           </div>
           <div className="input-field">
             <label htmlFor="confirm-password">Confirm Password</label>
@@ -109,7 +114,7 @@ const Signup = () => {
               />
             </div>
             {passwordConfirmation?.error && (
-              <p>{passwordConfirmation?.error}</p>
+              <p className="error">{passwordConfirmation?.error}</p>
             )}
           </div>
           <button type="submit" className="auth-form-submit">
