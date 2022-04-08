@@ -1,11 +1,24 @@
+import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../../Assets/Image/logo.png";
+import { auth } from "../../Firebase/firebase.init";
 import "./Navbar.css";
-import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const [user, setUser] = useState({});
+  console.log(user);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser({});
+      }
+    });
+  }, []);
 
   return (
     <nav
@@ -13,28 +26,29 @@ const Navbar = () => {
         pathname.includes("blog") ? { display: "none" } : { display: "flex" }
       }
     >
-      <div className='logo-container'>
-        <img src={Logo} alt='' />
+      <div className="logo-container">
+        <img src={Logo} alt="" />
       </div>
-      <div className='link-container'>
+      <div className="link-container">
         <NavLink
           className={({ isActive }) => (isActive ? "active-link" : "link")}
-          to='/'
+          to="/"
         >
           Home
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "active-link" : "link")}
-          to='/videos'
+          to="/videos"
         >
           Videos
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "active-link" : "link")}
-          to='/login'
+          to="/login"
         >
           Login
         </NavLink>
+        <p>{user.displayName}</p>
       </div>
     </nav>
   );
