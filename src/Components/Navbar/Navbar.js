@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../../Assets/Image/logo.png";
@@ -8,7 +8,7 @@ import "./Navbar.css";
 const Navbar = () => {
   const { pathname } = useLocation();
   const [user, setUser] = useState({});
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -20,6 +20,15 @@ const Navbar = () => {
     });
   }, []);
 
+  const handleLogOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
   return (
     <nav
       style={
@@ -42,12 +51,18 @@ const Navbar = () => {
         >
           Videos
         </NavLink>
-        <NavLink
-          className={({ isActive }) => (isActive ? "active-link" : "link")}
-          to="/login"
-        >
-          Login
-        </NavLink>
+        {user.email ? (
+          <button onClick={handleLogOut} className="logout-button">
+            LogOut
+          </button>
+        ) : (
+          <NavLink
+            className={({ isActive }) => (isActive ? "active-link" : "link")}
+            to="/login"
+          >
+            Login
+          </NavLink>
+        )}
         <p>{user.displayName}</p>
       </div>
     </nav>

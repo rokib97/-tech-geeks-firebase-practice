@@ -1,4 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleLogo from "../../Assets/Image/google.svg";
@@ -19,12 +23,30 @@ const Signup = () => {
         console.log(errorMessage);
       });
   };
-
+  const handleSignUp = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    // const passwordConfirm = event.target.confirmPassword.value;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        // ..
+      });
+  };
   return (
     <div className="auth-form-container ">
       <div className="auth-form">
         <h1>Sign Up</h1>
-        <form>
+        <form onSubmit={handleSignUp}>
           <div className="input-field">
             <label htmlFor="email">Email</label>
             <div className="input-wrapper">
