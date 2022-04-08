@@ -10,9 +10,13 @@ import { auth } from "../../Firebase/firebase.init";
 
 const provider = new GoogleAuthProvider();
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
+  const [passwordConfirmation, setPasswordConfirmation] = useState({
+    value: "",
+    error: "",
+  });
+  console.log(passwordConfirmation);
   const navigate = useNavigate();
 
   const googleAuth = () => {
@@ -31,10 +35,12 @@ const Signup = () => {
     /* const email = event.target.email.value;
     const password = event.target.password.value; */
     // const passwordConfirm = event.target.confirmPassword.value;
-    if (password !== passwordConfirmation) {
-      console.log("password mismatch");
-    }
-    if (email && password && password === passwordConfirmation) {
+
+    if (
+      email.value &&
+      password.value &&
+      password.value === passwordConfirmation.value
+    ) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
@@ -51,18 +57,19 @@ const Signup = () => {
   };
   const handleEmail = (event) => {
     const emailInput = event.target.value;
-    console.log(emailInput);
-    setEmail(emailInput);
+    setEmail({ value: emailInput, error: "" });
   };
   const handlePassword = (event) => {
     const passwordInput = event.target.value;
-    console.log(passwordInput);
-    setPassword(passwordInput);
+    setPassword({ value: passwordInput, error: "" });
   };
   const handleConfirmPassword = (event) => {
     const confirmPasswordInput = event.target.value;
-    console.log(confirmPasswordInput);
-    setPasswordConfirmation(confirmPasswordInput);
+    if (confirmPasswordInput !== password.value) {
+      setPasswordConfirmation({ value: "", error: "Password Mismatch" });
+    } else {
+      setPasswordConfirmation({ value: confirmPasswordInput, error: "" });
+    }
   };
   return (
     <div className="auth-form-container ">
@@ -101,6 +108,9 @@ const Signup = () => {
                 id="confirm-password"
               />
             </div>
+            {passwordConfirmation?.error && (
+              <p>{passwordConfirmation?.error}</p>
+            )}
           </div>
           <button type="submit" className="auth-form-submit">
             Sign Up
