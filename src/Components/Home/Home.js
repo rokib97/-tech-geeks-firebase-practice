@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { BlogContext } from "../../App";
 import Blog from "../Blog/Blog";
 import "./Home.css";
-import { BlogContext } from "../../App";
 
 const Home = () => {
   // const [blogs, setBlogs] = useState([]);
@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className='blogs-container'>
+    <div className="blogs-container">
       {blogs.map((blog, index) => (
         <Blog key={index} blog={blog} />
       ))}
